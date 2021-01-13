@@ -1,0 +1,557 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>HD Rainbow - Image to Color Palette</title>
+
+  <meta name="description" content="Online Image to Color Palette Generator">
+  <link rel="icon" href="favicon.ico">
+  
+  		    <meta property="og:title" content="HDRainbow - Online Image to Color Palette Generator"/>
+			<meta property="og:description" content="Generate color palette from your images and phots online, your images are processed inside the browser." />			
+			<meta property="og:type" content="product"/>
+			<meta property="og:url" content="http://www.hdrainbow.com"/>
+			<meta property="og:image" content="http://hdrainbow.com/cover-photo.png"/>
+			<meta property="og:image:alt" content="HDRainbow - Generate Color Palette from an Image"/>
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script-->
+  <script src="examples/js/jquery.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karla%7CMontserrat:700">
+  <link rel="stylesheet" href="examples/css/screen.css">
+
+  <link rel='stylesheet' type='text/css' href='https://d33wubrfki0l68.cloudfront.net/css/9fd646c780be52967fa5a6057ebc6a7ce158583d/css/font-awesome.min.css' />
+  <link rel='stylesheet' type='text/css' href='rad.css' />
+  <style>
+  html {
+		position: relative;
+		height: 100%;
+	}
+	body {
+		background-color: #458fa7;
+		min-height: 100%;
+	}
+
+	header {
+		padding:25px;
+		/*padding-top:0px;
+		padding-bottom:15px;*/
+	}	
+	footer {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		height: 35px; /*65px;*/
+		width: 100%;
+		overflow:hidden;
+		padding: 5px; /*1.2rem;*/
+	}
+	/*.ddtest {
+		height:516px;
+	} */
+	div.footerdiv{
+		margin:0 auto 0 auto;
+	}
+	h1 {
+		color: navy;
+		margin-left: 20px;
+	}
+	h2 {
+		font-size:1.4rem;
+		margin-top: 10px;
+		margin-bottom: 0px;
+	}
+	p.lead {
+		margin-bottom:0px;
+	}
+	p.footerP{
+		margin-bottom:0px;
+	}
+	div.header-logo-div {
+		padding-left: 50px;
+		padding-right: 50px;
+		float: left;
+	}
+	div.drop-zone {
+		height:12rem;
+		top:8.5rem;
+		border-style: dashed;
+		border-color: #c3c3c3;		
+	}
+	div.drop-zone-label {
+		height:25rem;
+		top:4.2rem; /*8.5rem;*/
+	}
+	div.color-thief-output {
+		padding-bottom:0px;
+	}
+	div.divSpacing5px{
+		padding:5px;
+	}
+	div.box  {
+		border-color: red;
+		border-width: 2px;
+		border-style:none;
+		border-radius:10px;
+		margin:1px;
+	}	
+	div.box:hover {
+		border-color: #10566c;
+		border-width: 2px;
+		border-style:solid;
+	}
+	div.swatch {
+ 		  padding: 15px 15px 15px 15px;
+		  overflow: visible;
+		  /*box-shadow: 5px 5px 2px #888888;
+		  margin: 20px 20px 20px 20px;*/
+		  position: relative;	
+	}
+	div.swatches {
+		padding-top:8px;
+		padding-left:8px;
+		padding-right:8px;
+		display:inline-block;
+	}
+	button.x {
+		position: absolute;
+		color: white;
+		top: -10px; /*-8px;*/
+		right: -8px;
+		width: 23px;
+		height: 23px;
+		border-radius: 23px;
+		border-width:0px;
+		display: inline-block;
+		background:url('close-x2.gif') no-repeat top left;	
+		background-color: #ff0000;			
+			/*display: inline-block;
+			background-color: #588596;
+			color: #ffe300;	
+			*/		
+		display:none;  // for some reason this need to be at the bottom
+	}
+	/*div.divSavePalette{
+		padding-top:15px;
+	}*/
+	button.btndownload {
+		background-color: #008CBA; /*4CAF50;  Green */
+		border: none;
+		color: white;
+		padding: 15px 32px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+		border-radius:7px;
+	}
+	button.btndownload:hover {
+		background-color: #10566c; /* Green */
+		border: none;
+		color: white;
+		padding: 15px 32px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+	}	
+	.stext {
+		color:#ADCED8;
+		text-align:center;
+		padding-bottom:20px;
+	}
+	div.div-browse{
+		display:none;
+	}
+	input.userselfile{
+		color:transparent;
+		width:1px;
+		height:1px;
+		opacity:0;
+	}
+  </style>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-102897656-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-102897656-2');
+</script>
+  
+</head>
+<body>
+<!------------------------------------------------------------------------------------------------------------------------------------------- 
+ --------------- This application is based on Color-Theif https://github.com/lokesh/color-thief/ by Lokesh https://twitter.com/lokesh
+ --------------------------------------------------------------------------------------------------------------------------------------------  
+-->
+  <header>
+	<div class="header-logo-div">
+		<img src="log-with-text.png" alt="HD Rainbow">
+	</div>
+    <div class="container">
+      <!--h2 class="logo">HD Rainbow</h2-->
+      <p class="lead">Generate color palette from an image.</p>
+    </div>
+  </header>
+  <!--section id="examples" class="examples-section">
+    <div class="container">
+      <h2>Example</h2>
+      <div id="example-images"></div>
+    </div>
+  </section-->
+
+  <section id="drag-drop" class="drag-drop-section ddtest"> 
+    <div class="container">
+      <!--h2>HD Rainbow</h2-->
+		  <div id="drop-zone" class="drop-zone">
+			<div class="drop-zone-label default-label dzd">Drop an image here
+			</div>
+			<div class="drop-zone-label div-browse" >
+				<!--div style="vertical-align:middle;"-->
+						<button href="" class="btndownload" onclick='onAddImageClick();'>Add Image</button> 
+						<input type="file" class="userselfile" id="userselfile" name="userselfile">
+			</div>
+			<div class="drop-zone-label dragging-label">Drop it!</div>
+		  </div>
+		  			<p class="lead stext">Your images are processed inside your browser, never sent to server.</p>
+		  <!--span class="stext">Your images are processed inside the browser, never sent to server.</span-->
+      <div id="dragged-images" class="dragged-images"></div>
+    </div>
+
+  </section>
+  <footer>
+    <div class="container footerdiv">
+      <p class="footerP">
+	  <a href="https://www.facebook.com/HDRainbow.colors/"><span class="fa fa-facebook"></span></a> &emsp; &ensp; 
+	  <a href="https://twitter.com/hdrainbow_com"><span class="fa fa-twitter"></span></a> &emsp; &ensp; 
+	  <a href="https://github.com/lokesh/color-thief/"><span class="fa fa-code"></span></a> &emsp; &ensp; 
+	  <a href="mailto:contact@tealpod.com"><span class="fa fa-envelope"></span></a>
+	  </p>	  
+    </div>
+  </footer>
+
+  <div id="sharing" class="sharing-section">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="hdrainbow_com" data-size="large">Tweet</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+
+
+  
+  
+  
+  
+  <!-- Mustache templates -->
+  <script id='image-section-template' type='text/x-mustache'>
+    {{#images}}
+    <div class="image-section {{class}}">
+      <div class="image-wrap">
+        <button class="run-functions-button">
+          <span class="no-touch-label">Try</span>
+          <span class="touch-label">Tap</span>
+        </button>
+        <img class="target-image" src="{{file}}" />
+      </div>
+      <div class="color-thief-output"></div>
+    </div>
+    {{/images}}
+  </script>
+
+  <script id="color-thief-output-template" type="text/x-mustache">
+    <!--div class="function get-color">
+      <h3 class="function-title">Dominant Color</h3>
+      <div class="swatches">
+        <div class="swatch box" style="background-color: rgb({{color.0}}, {{color.1}}, {{color.2}})"
+		  r="{{color.0}}" g="{{color.1}}" b="{{color.2}}" onclick="javascript:onclickCopy(this);">
+		  </div>
+      </div>
+      <div class="function-code">
+	  <code class="valColorDomi" r="{{color.0}}" g="{{color.1}}" b="{{color.2}}" >r:{{color.0}}, g:{{color.1}}, b:{{color.2}}</code>
+      </div>
+    </div-->
+    <div class="function get-palette">
+      <h3 class="function-title">Palette</h3><code>Click on a color to copy to clipboard</code>
+      <div class="function-output">
+        <div class="swatches">
+          {{#palette}}
+            <div class="swatch box" style="background-color: rgb({{0}}, {{1}}, {{2}})" r="{{0}}" g="{{1}}" b="{{2}}" 
+				onmouseover="javascript:onMouseOver(this);" onmouseout="javascript:onMouseOut(this);"  onclick="javascript:onclickCopy(this);" >
+			<button class="x" onclick="javascript:onclickClose(this);" >
+			</button>
+		  
+			</div>
+          {{/palette}}
+        </div>
+      </div>
+      <div class="function-code">
+        <!--code>colorThief.getPalette(image):{{elapsedTimeForGetPalette}}ms</code-->
+		<code class="valColor" ></code>
+      </div>
+	  
+	  <div class="divSpacing5px">
+
+		<input type="radio" id="test1" name="optradio" checked="checked" onchange="rdoHEX(this);" >    <label for="test1">HEX</label>&emsp;&ensp;
+		<input type="radio" id="test2" name="optradio" onchange="rdoRGB(this);">    <label for="test2">RGB</label>&emsp;&ensp;
+		<input type="radio" id="test3" name="optradio" onchange="rdoHSL(this);">    <label for="test3">HSL</label>
+			  
+			<!--label class="radio-inline"><input type="radio" name="optradio" onchange="rdoRGB(this);">&ensp;RGB</label>&emsp;&ensp;
+			<label class="radio-inline"><input type="radio" name="optradio" onchange="rdoHEX(this);">&ensp;HEX</label>&emsp;&ensp;
+			<label class="radio-inline"><input type="radio" name="optradio" onchange="rdoHSL(this);">&ensp;HSL</label-->	  
+	  </div>
+	  <div style="padding-top:20px;">
+		<code> 
+			<button href="" class="btndownload" onclick='onDownloadPaletteClick(this);'>Download Palette</button> 
+		</code>
+		<div  style="padding-top:20px;">
+			<!--code class="codeRightClickToSave" style="display:none;"> Right-Click on the bottom palette image to save </code-->			
+			<!--div class="divSavePalette">
+				<canvas class="canvasP"> </canvas>
+			</div-->
+	  </div>
+    </div>
+  </script>
+  			<canvas id="icanvas" class="icanvas" >Sorry, no canvas available</canvas>
+			<div><a id="idownload">Download as image 16</a></div>
+<script>
+function doCanvas() {
+	var canvas = document.getElementById('icanvas'),
+    ctx = canvas.getContext('2d');
+    /* draw something */
+    ctx.fillStyle = '#f90';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#fff';
+    ctx.font = '40px sans-serif';
+    ctx.fillText('Code Project', 10, canvas.height / 2 - 15);
+    ctx.font = '16px sans-serif';
+    ctx.fillText('Click link below to save this as image', 15, canvas.height / 2 + 35);
+}
+
+	$(function() {
+			document.getElementById('idownload').addEventListener('click', function() {
+			var elementDiv = document.getElementById('idownload');
+				
+					html2canvas(elementDiv, {
+						onrendered: function(canvas) {
+								
+								/*var a  = document.createElement('a');
+								a.href = canvas.toDataURL("image/png");
+								a.download = 'hdrainbow.png';
+								a.click();*/
+								
+								
+								var can = document.getElementById('icanvas');
+								var link = document.getElementById('idownload');
+								link.href = can.toDataURL();
+								link.download = 'test-11-54.png';		
+								//link.click();
+								
+						},
+						background :'#FFFFFF'
+					});				
+				
+				
+			}, false);
+
+			doCanvas();
+	});
+</script>
+  
+<script>
+function onAddImageClick(){
+	var fileinput = document.getElementById("userselfile");
+	//console.log("-->" + fileinput);
+    fileinput.click();
+}
+var funcFormat = rgbToHex; //asRGB;
+var cmr, cmg, cmb = 0; // current mouse over r, g, b values.
+function onMouseOver(src){  
+	var jsrc = $(src);
+	$(jsrc).find( ".x" ).show();
+	var valCol = $(src).closest('.get-palette').find('.valColor'); 
+	cmr = parseInt( jsrc.attr('r') );
+	cmg = parseInt( jsrc.attr('g') );
+	cmb = parseInt( jsrc.attr('b') );	
+	return changeColor(cmr, cmg, cmb, valCol);
+}
+function onMouseOut(src){
+	var jsrc = $(src);
+	$(jsrc).find( ".x" ).hide();
+	var valCol = $(src).closest('.get-palette').find('.valColor'); 
+	$(valCol).html(""); // clear on mouse exit
+}
+function changeColor(r, g, b, tar){  
+	var res = funcFormat(r, g, b);
+	//console.log('---a--' + res);
+	$(tar).html(res); //'code.valColor'
+	return res;
+}
+function onclickClose(src) {
+	$(src).parent().remove();
+	//onDownloadPaletteClick(src);
+}
+function onDownloadPaletteClick(src){
+	var ggparent = $(src).closest('.get-palette');
+	//$(ggparent).find('.codeRightClickToSave').show();
+	
+	//var canvas = $(ggparent).find('.canvasP').get(0);
+	//var valCol = $(src).closest('.get-palette').find('.swatches'); 
+	var valCol = ggparent.find('.swatches');  
+	var elementDiv = valCol;
+	/*var context = canvas.getContext('2d');  
+	context.fillStyle = "green";
+    context.fillRect(50, 50, 100, 100);*/	
+	html2canvas(elementDiv, {
+		onrendered: function(canvas) {
+				var image = canvas.toDataURL("image/png");
+				//$(ggparent).find('.divSavePalette').html('<img src="'+image+'"/>');
+				//var dataURL = canvas.toDataURL('image/png');
+				
+				var a  = document.createElement('a');
+				a.href = image;
+				a.download = 'hdrainbow.png';
+				a.click();
+				
+		},
+		background :'#FFFFFF'
+	});
+
+	doCanvas();
+				var can = document.getElementById('icanvas');
+				//var link = document.getElementById('idownload');
+				//link.href = can.toDataURL();
+				//link.download = 'test-a.png';
+				
+				var ab = document.createElement('ab');
+				ab.href = can.toDataURL();//image;
+				ab.download = 'hdrainbow-1-test.png';
+				ab.click();				
+				
+	return false;
+}
+function onclickCopy(src){
+	/*var jsrc = $(src);
+	cmr = parseInt( jsrc.attr('r') );
+	cmg = parseInt( jsrc.attr('g') );
+	cmb = parseInt( jsrc.attr('b') );
+	var res = funcFormat(cmr, cmg, cmb);
+	//console.log('---b--' + res);
+	$('code.valColor').html(res);*/
+	var res = onMouseOver(src);
+	copyToClipboard(res);
+}
+function asRGB(r,g, b){
+	var res = 'r:' + r + ', g:' + g + ', b:' + b ;
+	return res;
+}
+function copyToClipboard(val) {
+  var $temp = $("<input>");
+  $("body").append($temp);
+  $temp.val(val).select();
+  document.execCommand("copy");
+  $temp.remove();
+}
+function rdoRGB(src){ 
+	funcFormat = asRGB;
+	//updateColorValuesDominent( src );
+}
+function rdoHEX(src){
+	funcFormat = rgbToHex;
+	//updateColorValuesDominent( src );
+}
+function rdoHSL(src){
+	funcFormat = rgbToHsl;
+	//updateColorValuesDominent( src );
+}
+/*function updateColorValuesDominent(src){ 
+	//var valColSwatch = $(src).closest('.get-palette').find('.swatch'); 
+	//ar valCol = $(src).closest('.get-palette').find('.valColor'); 
+	//changeColor(cmr, cmg, cmb, valCol);
+	
+	var valColDomi = $(src).closest('.get-palette').parent().find('.valColorDomi');
+	tr = parseInt( valColDomi.attr('r') );
+	tg = parseInt( valColDomi.attr('g') );
+	tb = parseInt( valColDomi.attr('b') );
+	changeColor(tr, tg, tb, valColDomi);
+}*/
+function componentToHex(c) {
+    var hex = parseInt(c).toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+/**
+ * Credit to https://stackoverflow.com/questions/2353211/hsl-to-rgb-color-conversion
+ * Converts an RGB color value to HSL. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes r, g, and b are contained in the set [0, 255] and
+ * returns h, s, and l in the set [0, 1].
+ *
+ * @param   {number}  r       The red color value
+ * @param   {number}  g       The green color value
+ * @param   {number}  b       The blue color value
+ * @return  {Array}           The HSL representation
+ */
+function rgbToHsl(r, g, b){
+	r = parseInt(r);
+	g = parseInt(g);
+	b = parseInt(b);
+    r /= 255, g /= 255, b /= 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var h, s, l = (max + min) / 2;
+
+    if(max == min){
+        h = s = 0; // achromatic
+    }else{
+        var d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch(max){
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+    }
+
+    //return [h, s, l];
+	//return [Math.floor(h * 360), Math.floor(s * 100), Math.floor(l * 100)];
+	return "h:"+ Math.floor(h * 360) + ", s:" + Math.floor(s * 100) + ", l:" + Math.floor(l * 100);
+}
+</script>
+
+  <script src="src/color-thief.js"></script>
+  <script src="examples/js/mustache.js"></script>
+  <script src="examples/js/demo.js"></script>
+  <script src="html2canvas.min.js"></script>
+  
+
+<script src="hdr.js" ></script> 
+<script>
+	$(function() {
+	//console.log("isMobile--"+isMobile());
+		if(isMobile()){
+			$('.header-logo-div').css('padding-left','0px');
+			$('.header-logo-div').css('padding-right','0px');
+			$('.drop-zone-label').css('pointer-events', 'auto');			
+			$('.dzd').hide();
+			$('.drag-drop-section').show();
+			$('.div-browse').show();
+		}
+
+
+		/*$(".userselfile").change(function(){
+         //submit the form here
+		 console.log("jquery--"+ $('.userselfile')[0].files);
+		});*/
+	});
+	/*document.getElementById('userselfile').onchange = function() {
+    // fire the upload here
+	console.log("--plain--"+ document.getElementById('userselfile').files);
+	};*/
+</script>
+
+</body>
+</html>
